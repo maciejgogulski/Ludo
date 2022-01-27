@@ -2,8 +2,10 @@ package ludo.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame{
 
     private static final String TITLE = "Ludo";
 
@@ -13,19 +15,14 @@ public class MainFrame extends JFrame {
 
     public MainFrame() throws HeadlessException {
         super(TITLE);
+        setBounds(0,0,527,550);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-        setLayout(
-                new FlowLayout(FlowLayout.CENTER, 2, 2)
-        );
-        setJMenuBar(menu);
+        setBackground(Color.ORANGE);
+        setLayout(null);
+        //setJMenuBar(menu);
         add(game);
-        matchTheContent();
         setVisible(true);
     }
 
-    private void matchTheContent(){
-        pack();
-        setLocationRelativeTo(null);
-    }
 }
