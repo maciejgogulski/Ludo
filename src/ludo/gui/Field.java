@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class Field extends JLabel implements MouseListener {
-    private final Color color;
+    private Color color;
     private Piece piece;
 
     public Field(int posX, int posY){
@@ -41,6 +41,11 @@ public class Field extends JLabel implements MouseListener {
             remove(piece);
             this.piece = null;
         }
+    }
+
+    public void setColor(Color color){
+        this.color = color;
+        setBackground(color);
     }
 
     public Piece getPiece() {
