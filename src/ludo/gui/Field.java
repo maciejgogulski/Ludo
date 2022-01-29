@@ -40,6 +40,15 @@ public class Field extends JLabel implements MouseListener {
         if(hasPiece()){
             remove(piece);
             this.piece = null;
+            setBackground(color);
+            repaint();
+        }
+    }
+
+    public void movePiece(Field oldField, Field newField) {
+        if (oldField.hasPiece()) {
+            newField.addPiece(oldField.getPiece());
+            oldField.removePiece();
         }
     }
 
@@ -58,30 +67,44 @@ public class Field extends JLabel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        if(hasPiece()){
+            if(!GamePanel.isClicked) {
+                setBackground(color.darker().darker());
+                GamePanel.isClicked = true;
+                GamePanel.lastClicked = this;
+            }else{
+                setBackground(color.brighter());
+                GamePanel.isClicked = false;
+                GamePanel.lastClicked = null;
+            }
+        }else{
+            if(GamePanel.isClicked){
+                movePiece(GamePanel.lastClicked, this);
+                GamePanel.isClicked = false;
+                GamePanel.lastClicked = null;
+            }
+        }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        setBackground(color.darker());
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        setBackground(color.brighter());
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        setBackground(color.brighter());
+        if(!GamePanel.isClicked) {
+            setBackground(color.brighter());
+        }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        setBackground(color);
+        if(!GamePanel.isClicked) {
+            setBackground(color);
+        }
     }
-
-
-
-
 }

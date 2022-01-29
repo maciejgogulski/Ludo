@@ -1,4 +1,4 @@
-package ludo.entities;
+package ludo.enums;
 
 import java.awt.*;
 

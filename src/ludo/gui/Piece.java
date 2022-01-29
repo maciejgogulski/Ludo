@@ -1,11 +1,13 @@
 package ludo.gui;
 
-import ludo.entities.PieceColor;
+import ludo.enums.PieceColor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
-public class Piece extends JLabel {
+public class Piece extends JLabel{
 
     private final PieceColor color;
     private Image image;
