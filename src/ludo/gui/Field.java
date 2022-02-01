@@ -4,10 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.LinkedList;
 
 public class Field extends JLabel implements MouseListener {
     private Color color;
-    private Piece piece;
+    private LinkedList<Piece> pieces;
 
     public Field(int posX, int posY){
         super();
@@ -16,6 +17,7 @@ public class Field extends JLabel implements MouseListener {
         setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
         setOpaque(true);
         color = new Color(255, 242, 230 );
+        pieces = new LinkedList<>();
         setBackground(color);
         addMouseListener(this);
     }
@@ -26,23 +28,28 @@ public class Field extends JLabel implements MouseListener {
         setLocation(posX, posY);
         setSize(35,35);
         setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+        pieces = new LinkedList<>();
         setBackground(color);
         setOpaque(true);
         addMouseListener(this);
     }
 
     public void addPiece(Piece piece){
-        this.piece = piece;
-        add(piece);
+        pieces.add(piece);
+        repaint();
     }
 
     public void removePiece(){
         if(hasPiece()){
-            remove(piece);
-            this.piece = null;
+            pieces.remove();
             setBackground(color);
             repaint();
         }
+    }
+
+    public void take(Field oldField, Field newField){
+        pieces.clear();
+        movePiece(oldField, newField);
     }
 
     public void movePiece(Field oldField, Field newField) {
@@ -57,12 +64,17 @@ public class Field extends JLabel implements MouseListener {
         setBackground(color);
     }
 
-    public Piece getPiece() {
-        return piece;
+    public Color getColor() {
+        return color;
     }
 
+    public Piece getPiece() {
+        return pieces.getLast();
+    }
+
+
     public boolean hasPiece(){
-        return piece != null;
+        return pieces.size() != 0;
     }
 
     @Override
@@ -73,7 +85,15 @@ public class Field extends JLabel implements MouseListener {
                 GamePanel.isClicked = true;
                 GamePanel.lastClicked = this;
             }else{
-                setBackground(color.brighter());
+                if(GamePanel.lastClicked.equals(this)) {
+                    setBackground(color.brighter());
+                }else{
+                    if(getPiece().getColor().equals(GamePanel.lastClicked.getPiece().getColor())){
+                        movePiece(GamePanel.lastClicked, this);
+                    }else{
+                        take(GamePanel.lastClicked, this);
+                    }
+                }
                 GamePanel.isClicked = false;
                 GamePanel.lastClicked = null;
             }
@@ -106,5 +126,20 @@ public class Field extends JLabel implements MouseListener {
         if(!GamePanel.isClicked) {
             setBackground(color);
         }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        if(pieces.size() >= 1) {
+            g2d.drawImage(getPiece().getImage(), 7 , 5, null);
+            if(pieces.size() > 1) {
+                String s = "";
+                s += pieces.size();
+                g2d.drawString(s, 1, 10);
+            }
+        }
+        repaint();
     }
 }
