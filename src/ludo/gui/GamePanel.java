@@ -37,6 +37,7 @@ public class GamePanel extends JPanel {
         drawBases();
         drawHouses();
         drawBoard();
+        add(new Dice());
         whosTurn = RED;
         isClicked = false;
     }
