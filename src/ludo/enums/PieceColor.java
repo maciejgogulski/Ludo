@@ -13,4 +13,7 @@ public enum PieceColor {
         this.color = color;
     }
 
+    public Color getColor() {
+        return color;
+    }
 }

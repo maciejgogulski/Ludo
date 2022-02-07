@@ -21,33 +21,27 @@ public class Dice extends JLabel implements MouseListener {
     private final Image SIX = new ImageIcon("img/dice/six.png").getImage()
             .getScaledInstance(40,40,Image.SCALE_SMOOTH);
 
-    private final Image INVERTED_ONE = new ImageIcon("img/dice/inv_one.png").getImage()
+    private final Image DEFAULT = new ImageIcon("img/dice/default.png").getImage()
             .getScaledInstance(40,40,Image.SCALE_SMOOTH);
-    private final Image INVERTED_TWO = new ImageIcon("img/dice/inv_two.png").getImage()
-            .getScaledInstance(40,40,Image.SCALE_SMOOTH);
-    private final Image INVERTED_THREE = new ImageIcon("img/dice/inv_three.png").getImage()
-            .getScaledInstance(40,40,Image.SCALE_SMOOTH);
-    private final Image INVERTED_FOUR = new ImageIcon("img/dice/inv_four.png").getImage()
-            .getScaledInstance(40,40,Image.SCALE_SMOOTH);
-    private final Image INVERTED_FIVE = new ImageIcon("img/dice/inv_five.png").getImage()
-            .getScaledInstance(40,40,Image.SCALE_SMOOTH);
-    private final Image INVERTED_SIX = new ImageIcon("img/dice/inv_six.png").getImage()
-            .getScaledInstance(40,40,Image.SCALE_SMOOTH);
+
 
     private Image rolled;
     private int value;
+    private boolean isRolled;
 
     public Dice(){
         super();
-        setLocation(235,235);
+        setLocation(136,136);
         setSize(40,40);
         setOpaque(true);
         addMouseListener(this);
-        roll();
+        isRolled = false;
+        rolled = DEFAULT;
     }
 
 
     public void roll(){
+        isRolled = true;
         Random rand = new Random();
         switch (rand.nextInt(6) + 1) {
             case 1 -> {
@@ -81,9 +75,19 @@ public class Dice extends JLabel implements MouseListener {
         return value;
     }
 
+    public void setRolled(boolean rolled) {
+        isRolled = rolled;
+    }
+
+    public boolean isRolled() {
+        return isRolled;
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        roll();
+        if(!isRolled) {
+            roll();
+        }
     }
 
     @Override
@@ -111,6 +115,9 @@ public class Dice extends JLabel implements MouseListener {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         setBackground(Color.BLACK);
+        if(!isRolled){
+            rolled = DEFAULT;
+        }
         g2d.drawImage(rolled, 0, 0, null);
         repaint();
     }
