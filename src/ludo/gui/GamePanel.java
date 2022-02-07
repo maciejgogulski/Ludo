@@ -128,6 +128,7 @@ public class GamePanel extends JPanel {
                                     }
                                     BOARD[0].addPiece(getPiece());
                                     removePiece();
+                                    switchQueue();
                                 }
                                 return;
                             }
@@ -160,6 +161,7 @@ public class GamePanel extends JPanel {
                                     }
                                     BOARD[13].addPiece(getPiece());
                                     removePiece();
+                                    switchQueue();
                                 }
                                 return;
                             }
@@ -192,6 +194,7 @@ public class GamePanel extends JPanel {
                                     }
                                     BOARD[26].addPiece(getPiece());
                                     removePiece();
+                                    switchQueue();
                                 }
                                 return;
                             }
@@ -224,6 +227,7 @@ public class GamePanel extends JPanel {
                                     }
                                     BOARD[39].addPiece(getPiece());
                                     removePiece();
+                                    switchQueue();
                                 }
                                 return;
                             }
@@ -347,6 +351,17 @@ public class GamePanel extends JPanel {
         isWon = false;
         dice = new Dice();
         add(dice);
+
+        // Jeżeli nie można wykonać ruchu, trzeba spasować :(
+        JButton pass = new JButton("Pass");
+        pass.addActionListener(e -> {
+            switchQueue();
+            dice.setRolled(false);
+        });
+        pass.setBackground(new Color(255,170,0));
+        pass.setBounds(5, 5, 70, 34);
+        add(pass);
+
     }
 
     public void drawBoard() {
@@ -542,8 +557,8 @@ public class GamePanel extends JPanel {
                 }
             }
             dice.setLocation(x, y);
-            dice.setRolled(false);
         }
+        dice.setRolled(false);
     }
 
     public void gameWon(PieceColor winner){
